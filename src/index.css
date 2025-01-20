@@ -1,0 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&family=Unica+One&display=swap');
+
+.app-container {
+    margin: 0 auto;
+    background-color: #FF7043;
+    font-family: "Roboto", serif;
+    height: 100vh;
+}

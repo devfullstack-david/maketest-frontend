@@ -3,9 +3,11 @@ import axios from "axios";
 const apiClient = axios.create({
     baseURL: 'http://localhost:5141/api',
     headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Accept": "application/json"
     },
-    timeout: 10000
+    timeout: 10000,
+    withCredentials: false,
 });
 
 /*When implements token authorization in api

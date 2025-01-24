@@ -1,18 +1,26 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import '../styles/home.css';
-import { getUsers } from '../api/userApi';
-import React from 'react';
+import { useState } from 'react';
+import { login } from '../api/userApi';
 
 export const Home = () => {
-    async function handleGetUsers(event: React.FormEvent<HTMLButtonElement>) {
-        event.preventDefault();
-        try {
-            await getUsers();
-        } catch (error) {
-            console.error(error);
-        }
-    };
-    
+  type LoginUser = {
+    email: string,
+    password: string,
+  };
+
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+
+    async function handleLogin(user: LoginUser) {
+      setIsLoading(true);
+      try {
+        const response = await login(user);
+      } catch (error) {
+        
+      }
+
+    }
+
     return (
         <div className="container">
         <div className="row">

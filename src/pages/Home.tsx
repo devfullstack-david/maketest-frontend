@@ -1,25 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import '../styles/home.css';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { login } from '../api/userApi';
+import { LoginUser } from '../types/login';
 
 export const Home = () => {
-  type LoginUser = {
-    email: string,
-    password: string,
-  };
-
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    async function handleLogin(user: LoginUser) {
+    async function handleLogin(e: React.MouseEvent<HTMLButtonElement>, user: LoginUser) {
+      e.preventDefault();
       setIsLoading(true);
       try {
-        const response = await login(user);
+        await login(user);
+        alert('Logado com sucesso');
       } catch (error) {
-        
+        console.error(error);
       }
-
-    }
+      setIsLoading(false);
+    };
 
     return (
         <div className="container">
@@ -41,7 +39,12 @@ export const Home = () => {
               </div>
 
               <div className="mt-3">
-                <button className="btn btn-primary login-card-button" onClick={handleGetUsers}>Login</button>
+                <button 
+                  className="btn btn-primary login-card-button" 
+                  onClick={(e) => handleLogin(e, { email: '', password: '' })}
+                  disabled={isLoading}
+                >Login
+                </button>
               </div>
             </form>
 

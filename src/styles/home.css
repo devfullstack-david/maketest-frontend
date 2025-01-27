@@ -61,3 +61,9 @@
 .login-card-img {
     border-bottom: #000;
 }
+
+.error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 16px;
+}

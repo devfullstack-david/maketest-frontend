@@ -3,20 +3,47 @@ import '../styles/home.css';
 import React, { useState } from 'react';
 import { login } from '../api/userApi';
 import { LoginUser } from '../types/login';
+import { redirect } from 'react-router-dom';
 
 export const Home = () => {
+    const [userData, setUserData] = useState<LoginUser>({ email: '', password: '' });
     const [isLoading, setIsLoading] = useState<boolean>(false);
-
-    async function handleLogin(e: React.MouseEvent<HTMLButtonElement>, user: LoginUser) {
+    const [errorMessage, setErrorMessage] = useState<string>('');
+   
+    async function handleLogin(e: React.MouseEvent<HTMLButtonElement>) {
       e.preventDefault();
       setIsLoading(true);
-      try {
-        await login(user);
-        alert('Logado com sucesso');
-      } catch (error) {
-        console.error(error);
-      }
+      const response = await login(userData);
+
+      if(response == 400) {
+        setErrorMessage("Usuário inválido");
+      };
+
+      if(response == 200) {
+        setErrorMessage('');
+        redirect("/");
+      };
+
+      if(typeof(response) == 'string') {
+        setErrorMessage(response);
+      };
+
       setIsLoading(false);
+    };
+
+    function updateEmail(e: React.ChangeEvent<HTMLInputElement>) {  
+      const { value } = e.target;
+      setUserData({ ...userData, email: value });
+    };
+
+    function updatePassword(e: React.ChangeEvent<HTMLInputElement>) {
+      const { value } = e.target;
+      setUserData({ ...userData, password: value });
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    function handleRegister(e: React.MouseEvent<HTMLButtonElement>) {
+      redirect("/register-user");
     };
 
     return (
@@ -27,12 +54,24 @@ export const Home = () => {
 
             <form className="login-card-form">
               <div className="input-group">
-                <input type="email" className="form-control" placeholder="E-mail" />
+                <input 
+                  type="email" 
+                  className="form-control" 
+                  placeholder="E-mail" 
+                  value={userData.email}
+                  onChange={updateEmail}
+                />
                 <span className="input-group-text" id="basic-addon2">@</span>
               </div>
 
               <div className="input-group mt-2">
-                <input type="password" className="form-control" placeholder="Password" />
+                <input 
+                  type="password" 
+                  className="form-control" 
+                  placeholder="Password" 
+                  value={userData.password}
+                  onChange={updatePassword}
+                />
                 <span className="input-group-text" id="basic-addon2">
                   <i className="bi bi-lock-fill"></i>
                 </span>
@@ -41,18 +80,22 @@ export const Home = () => {
               <div className="mt-3">
                 <button 
                   className="btn btn-primary login-card-button" 
-                  onClick={(e) => handleLogin(e, { email: '', password: '' })}
+                  onClick={(e) => handleLogin(e)}
                   disabled={isLoading}
                 >Login
                 </button>
               </div>
             </form>
 
+            {errorMessage != '' && <p className='error-message'> { errorMessage }! </p>}
             <br />
             <br />
 
             <p className="login-card-text-2">Don't have login?</p>
-            <button className="btn btn-primary login-card-button-register">Register</button>
+            <button 
+              className="btn btn-primary login-card-button-register"
+              onClick={(e) => handleRegister(e)}
+            >Register</button>
 
             <div className="row">
               <div className="col-6"></div>

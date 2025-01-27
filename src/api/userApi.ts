@@ -6,7 +6,11 @@ export const getUsers = async () => {
     return users;
 };
 
-export const login = async (user: LoginUser) => {
-    const response = await apiClient.post('/User/Login', user);
-    return response.status;
+export const login = async (user: LoginUser): Promise<string | number> => {
+    try {
+        const response = await apiClient.post('/User/Login', user);
+        return response.data;  
+    } catch (err) {
+        return `Ocorreu um erro inesperado, contate nosso time ${err}`;
+    }
 };

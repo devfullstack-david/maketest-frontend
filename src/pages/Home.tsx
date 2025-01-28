@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { login } from '../api/userApi';
 import { LoginUser } from '../types/login';
 import { redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export const Home = () => {
     const [userData, setUserData] = useState<LoginUser>({ email: '', password: '' });
@@ -39,11 +40,6 @@ export const Home = () => {
     function updatePassword(e: React.ChangeEvent<HTMLInputElement>) {
       const { value } = e.target;
       setUserData({ ...userData, password: value });
-    };
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    function handleRegister(e: React.MouseEvent<HTMLButtonElement>) {
-      redirect("/register-user");
     };
 
     return (
@@ -92,10 +88,11 @@ export const Home = () => {
             <br />
 
             <p className="login-card-text-2">Don't have login?</p>
-            <button 
-              className="btn btn-primary login-card-button-register"
-              onClick={(e) => handleRegister(e)}
-            >Register</button>
+            <Link to="/register-user">
+              <button 
+                className="btn btn-primary login-card-button-register"
+              >Register</button>
+            </Link>
 
             <div className="row">
               <div className="col-6"></div>
